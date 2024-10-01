@@ -8,7 +8,6 @@ import pytesseract
 from gtts import gTTS
 from googletrans import Translator
 
-# Estilos CSS para mejorar la apariencia
 st.markdown("""
 <style>
     body {
@@ -47,7 +46,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Funciones
 def text_to_speech(input_language, output_language, text, tld):
     translation = translator.translate(text, src=input_language, dest=output_language)
     trans_text = translation.text
@@ -69,21 +67,17 @@ def remove_files(n):
                 os.remove(f)
                 print("Deleted ", f)
 
-# Remover archivos antiguos
 remove_files(7)
 
-# Título principal
 st.markdown("<h1 class='title'>Reconocimiento Óptico de Caracteres</h1>", unsafe_allow_html=True)
 st.subheader("Elige la fuente de la imagen: cámara o archivo")
 
-# Entrada de cámara
 cam_ = st.checkbox("Usar Cámara")
 if cam_:
     img_file_buffer = st.camera_input("📸 Toma una Foto")
 else:
     img_file_buffer = None
 
-# Barra lateral para opciones de procesamiento
 with st.sidebar:
     st.subheader("Procesamiento para Cámara")
     filtro = st.radio("Filtro para imagen con cámara", ('Sí', 'No'))
@@ -91,8 +85,7 @@ with st.sidebar:
 bg_image = st.file_uploader("Cargar Imagen:", type=["png", "jpg"])
 if bg_image is not None:
     st.image(bg_image, caption='Imagen cargada.', use_column_width=True)
-    
-    # Guardar la imagen en el sistema de archivos
+
     with open(bg_image.name, 'wb') as f:
         f.write(bg_image.read())
     
@@ -104,7 +97,7 @@ if bg_image is not None:
     st.markdown(f"<div class='text-output'>{text}</div>", unsafe_allow_html=True)
 
 if img_file_buffer is not None:
-    # Leer el archivo de imagen de la cámara con OpenCV
+
     bytes_data = img_file_buffer.getvalue()
     cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
 
@@ -116,7 +109,6 @@ if img_file_buffer is not None:
     st.markdown("<h2 class='header'>Texto Reconocido:</h2>", unsafe_allow_html=True)
     st.markdown(f"<div class='text-output'>{text}</div>", unsafe_allow_html=True)
 
-# Parámetros de traducción
 with st.sidebar:
     st.subheader("Parámetros de Traducción")
     
